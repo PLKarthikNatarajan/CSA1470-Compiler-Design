@@ -1,27 +1,29 @@
-digit [0-9]
-letter [A-Za-z]
-%{
-int count_id,count_key;
-%}
-%%
-(stdio.h|conio.h) { printf("%s is a standard
-library\n",yytext); }
-(include|void|main|printf|int) { printf("%s is a
-keyword\n",yytext); count_key++; }
-{letter}({letter}|{digit})* { printf("%s is a identifier\n",
-yytext); count_id++; }
-{digit}+ { printf("%s is a number\n", yytext); }
-\"(\\.|[^"\\])*\" { printf("%s is a string literal\n",
-yytext); }
-.|\n { }
-%%
-int yywrap(void) {
+%{ 
+int n = 0 ;  
+%} 
+
+%% 
+
+"while"|"if"|"else" {n++;printf("\t keywords : %s", yytext);}  
+
+"int"|"float" {n++;printf("\t keywords : %s", yytext);}   
+
+[a-zA-Z_][a-zA-Z0-9_]* {n++;printf("\t identifier : %s", yytext);} 
+
+"<="|"=="|"="|"++"|"-"|"*"|"+" {n++;printf("\t operator : %s", yytext);}
+
+[(){}|, ;]    {n++;printf("\t separator : %s", yytext);} 
+
+[0-9]*"."[0-9]+ {n++;printf("\t float : %s", yytext);}  
+
+[0-9]+ {n++;printf("\t integer : %s", yytext);}                        
+
+.    ;
+%% 
+int yywrap(){
 return 1;
 }
-int main(int argc, char *argv[]) {
-yyin = fopen(argv[1], "r");
-yylex();
-printf("number of identifiers = %d\n", count_id);
-printf("number of keywords = %d\n", count_key);
-fclose(yyin);
-}
+
+int main() 
+
+{ 
