@@ -1,24 +1,26 @@
-%
+%{
+int nlines,nwords,nchars;
+%}
+
+%%
+\n {
+	nchars++;nlines++; 
+	}
+
+[^ \n\t]+ {nwords++, nchars=nchars+yyleng;}
+. {nchars++;}
+
+%%
+
+int yywrap(void)  
 {
-    int n, w, c;
-    %
+ return 1;
 }
-% %
-\n { n++; }
-[^ \n\t] +
+int main(int argc, char*argv[]) 
 {
-    w++;
-    c = c + yyleng;
-}
-.c++;
-% % int yywrap(void)
-{
-    return 1;
-} 
-main()
-{
-    extern FILE* yyin;
-    yyin = fopen("input.txt", "r");
-    yylex();
-    printf("Line= %d word=%d total char=%d \n", n, w, c);
+	yyin=fopen(argv[1],"r");
+ yylex();
+ printf("Lines = %d\nChars=%d\nWords=%d",nlines,nchars,nwords);
+
+ return 0;
 }
