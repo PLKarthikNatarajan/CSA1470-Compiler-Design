@@ -1,59 +1,32 @@
 %{
-
-#include<stdio.h>
-
-#include<string.h>
-
-int i;
-
+  
+  
 %}
 
+LOWER [a-z]
+UPPER [A-Z]
 %%
 
-[a-z A-Z]* {
+[\t]+                   /* ignore whitespaces */ ;
 
-for(i=0;i<=yyleng;i++)
+{UPPER}                 {
+                          printf("%c", yytext[0]);
+                        }
 
-{
+{LOWER}                 {
+                          printf("%c", yytext[0] - 32);
+                        }
 
-if((yytext[i]=='a')&&(yytext[i+1]=='b')&&(yytext[i+2]=='c'))
 
-{
+.                       { ECHO; }
 
-yytext[i]='A';
-
-yytext[i+1]='B';
-
-yytext[i+2]='C';
-
-}
-
-}
-
-printf("%s",yytext);
-
-}
-
-[\t]* return;
-
-.* {ECHO;}
-
-\n {printf("%s",yytext);}
+\n                      { 
+                          return 0;
+                        }
 
 %%
-
-main()
-
-{
-
-yylex();
-
-}
-
-int yywrap()
-
-{
-
-return 1;
-
+int yywrap(){}
+int main() {
+  yylex();
+  return 0;
 }
